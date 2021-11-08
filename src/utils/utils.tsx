@@ -109,9 +109,13 @@ export const formatInputDate = (date: string) => {
     hour = year;
     year = '2021'
   }
+  if (!year) {
+    year = '2021'
+  }
 
   const newDate = new Date(
-    `${month} ${day} ${!year ? 2021 : year} ${hour}:${minute}:${second}`);
+    `${month} ${day} ${year} ${hour}:${minute}:${second}`
+  );
   const newDay =  newDate.getDate();
   const newMonth = newDate.getMonth();
   const newYear = newDate.getFullYear();
@@ -141,7 +145,8 @@ export const formatLocaleDate = (date: string) => {
   const second: string = inputDate.slice(6, 7).toString();
 
   const newDate = new Date(
-    `${month} ${day} ${year} ${hour}:${minute}:${second}`);
+    `${month} ${day} ${year} ${hour}:${minute}:${second}`
+  );
   const newDay =  newDate.getDate();
   const newMonth = newDate.getMonth();
   const newYear = newDate.getFullYear();
