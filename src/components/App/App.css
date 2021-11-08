@@ -1,0 +1,11 @@
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding-top: 200px;
+
+  min-height: 100vh;
+  margin: auto;
+  background: dimgray;
+}
