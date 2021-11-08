@@ -31,7 +31,8 @@ import {
 } from '../../utils/constants';
 
 const App: FC = () => {
-  const [date, setDate] = useState<string>('')
+
+  const [date, setDate] = useState<string>('');
 
   const changeDate: Date | string = new Date(date);
 
@@ -276,11 +277,6 @@ const App: FC = () => {
 
       setDate(formattedDate);
     }
-
-    window.requestAnimationFrame(() => {
-      input.selectionStart = selectionStart;
-      input.selectionEnd = selectionStart;
-    });
     input.setSelectionRange(cursorStart, cursorEnd);
     input.selectionStart = cursorStart;
     input.selectionEnd = cursorEnd;

@@ -5,16 +5,6 @@ export const getMonthName = (date: Date) => {
 }
 
 export const loopPartOfDate = (
-  // year: number,
-  // month: number,
-  // higherPart: number,
-  // smallerPart: number,
-  // date: Date,
-  // handleDetDate: (this: Date) => number,
-  // handleSetDate: (this: Date, value: number) => void,
-  // mod: number,
-  // selection: string
-
   day: number,
   month: number,
   year: number,
@@ -25,7 +15,9 @@ export const loopPartOfDate = (
   selection: string,
   mod: number
 ) => {
+
   let newDate: Date;
+
   if (selection === 'day') {
     day = date.getDate() + mod;
     newDate = new Date(year, month + 1, 0);
@@ -106,10 +98,17 @@ export const formatInputDate = (date: string) => {
   const inputDate: Array<string> = date.split(/\W/);
   const day: string = inputDate.slice(0, 1).toString();
   const month: string = inputDate.slice(1, 2).toString();
-  const year: string = inputDate.slice(2, 3).toString();
-  const hour: string = inputDate.slice(3, 4).toString();
-  const minute: string = inputDate.slice(4, 5).toString();
-  const second: string = inputDate.slice(5, 6).toString();
+  let year: string = inputDate.slice(2, 3).toString();
+  let hour: string = inputDate.slice(3, 4).toString();
+  let minute: string = inputDate.slice(4, 5).toString();
+  let second: string = inputDate.slice(5, 6).toString();
+
+  if (Number(hour) > 23) {
+    second = minute
+    minute = hour
+    hour = year;
+    year = '2021'
+  }
 
   const newDate = new Date(
     `${month} ${day} ${!year ? 2021 : year} ${hour}:${minute}:${second}`);
@@ -162,9 +161,12 @@ export const formatLocaleDate = (date: string) => {
   return currentDate;
 }
 
-export const handleSetSelectionRange = (element: HTMLInputElement, start: number, end: number) => {
+export const handleSetSelectionRange = (
+  element: HTMLInputElement,
+  start: number,
+  end: number
+) => {
   element.onselect = () => {
-    console.log(start, end)
     element.setSelectionRange(start, end);
   }
 }
