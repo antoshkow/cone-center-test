@@ -33,6 +33,7 @@ import {
 const App: FC = () => {
 
   const [date, setDate] = useState<string>('');
+  const [cursor, setCursor] = useState<number | null>(null);
 
   const changeDate: Date | string = new Date(date);
 
@@ -46,6 +47,7 @@ const App: FC = () => {
   let mod: number;
 
   const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setCursor(evt.currentTarget.selectionStart);
     setDate(evt.currentTarget.value);
   }
 
@@ -59,13 +61,13 @@ const App: FC = () => {
     selectionEnd : selectionStart;
 
     let selection: string;
-    let cursorStart: number;
-    let cursorEnd: number;
 
     if (key === 'ArrowUp') {
       mod = 1;
+      setCursor(selectionStart);
     } else if (key === 'ArrowDown') {
       mod = -1;
+      setCursor(selectionStart);
     } else {
       return;
     }
@@ -97,9 +99,6 @@ const App: FC = () => {
         )!;
       }
 
-      cursorStart = daySelectionStart;
-      cursorEnd = daySelectionEnd;
-
       // Month
     } else if (cursor >= monthSelectionStart && cursor <= monthSelectionStart + getMonthName(changeDate).length) {
       selection = 'month';
@@ -124,9 +123,6 @@ const App: FC = () => {
         handleSetSelectionRange(input, monthSelectionStart, monthSelectionStart + monthList[month].length);
       }
 
-      cursorStart = monthSelectionStart;
-      cursorEnd = monthSelectionStart + getMonthName(changeDate).length;
-
       // Year
     } else if (cursor >= yearSelectionStart + getMonthName(changeDate).length && cursor <= yearSelectionEnd + getMonthName(changeDate).length) {
       selection = 'year';
@@ -148,9 +144,6 @@ const App: FC = () => {
           mod
         )!;
       }
-
-      cursorStart = yearSelectionStart;
-      cursorEnd = yearSelectionEnd + getMonthName(changeDate).length;
 
       // Hours
     } else if (cursor >= hoursSelectionStart + getMonthName(changeDate).length && cursor <= hoursSelectionEnd + getMonthName(changeDate).length) {
@@ -174,11 +167,8 @@ const App: FC = () => {
         )!;
       }
 
-      cursorStart = hoursSelectionStart;
-      cursorEnd = hoursSelectionEnd + getMonthName(changeDate).length;
-
       // Minutes
-    } else if (cursor >= 12 + getMonthName(changeDate).length && cursor <= 14 + getMonthName(changeDate).length) {
+    } else if (cursor >= minutesSelectionStart + getMonthName(changeDate).length && cursor <= minutesSelectionEnd + getMonthName(changeDate).length) {
       selection = 'minutes';
 
       handleSetSelectionRange(input, minutesSelectionStart + getMonthName(changeDate).length, minutesSelectionEnd + getMonthName(changeDate).length);
@@ -199,11 +189,8 @@ const App: FC = () => {
         )!;
       }
 
-      cursorStart = minutesSelectionStart
-      cursorEnd = minutesSelectionEnd + getMonthName(changeDate).length;
-
       // Seconds
-    } else if (cursor >= 15 + getMonthName(changeDate).length && cursor <= 17 + getMonthName(changeDate).length) {
+    } else if (cursor >= secondsSelectionStart + getMonthName(changeDate).length && cursor <= secondsSelectionEnd + getMonthName(changeDate).length) {
       selection = 'seconds';
 
       handleSetSelectionRange(input, secondsSelectionStart + getMonthName(changeDate).length, secondsSelectionEnd + getMonthName(changeDate).length);
@@ -223,9 +210,6 @@ const App: FC = () => {
           mod
         )!;
       }
-
-      cursorStart = secondsSelectionStart
-      cursorEnd = secondsSelectionEnd + getMonthName(changeDate).length;
     } else {
       return;
     }
@@ -244,9 +228,6 @@ const App: FC = () => {
 
       setDate(formattedDate);
     }
-
-    input.selectionStart = cursorStart;
-    input.selectionEnd = cursorEnd;
   }
 
     const handleInputSubmit = (evt: KeyboardEvent<Element>) => {
@@ -260,14 +241,15 @@ const App: FC = () => {
       setDate('Формат даты: day month year time');
       setTimeout(() => {
         setDate('');
-      }, 2000)
+      }, 2000);
     }
-  }, [date])
+  }, [date]);
 
   return (
     <div className="app">
       <Input
         date={date}
+        cursor={cursor}
         handleChange={handleInputChange}
         handleKeyDown={handleInputKeyDown}
         handleSubmit={handleInputSubmit}

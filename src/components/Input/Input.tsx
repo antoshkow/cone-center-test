@@ -1,7 +1,5 @@
 import React, {
   FC,
-  ChangeEvent,
-  useState,
   useRef,
   useEffect
 } from 'react';
@@ -10,24 +8,18 @@ import { InputProps } from '../../utils/constants';
 
 const Input: FC<InputProps> = ({
   date,
+  cursor,
   handleChange,
   handleKeyDown,
   handleSubmit
 }) => {
 
-  const [cursor, setCursor] = useState<number | null>(null);
-
   const ref = useRef<HTMLInputElement>(null!);
 
   useEffect(() => {
     const input = ref.current;
-    if (input) input.setSelectionRange(cursor, cursor)
+    if (input) input.setSelectionRange(cursor, cursor);
   }, [ref, cursor, date]);
-
-  const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setCursor(evt.currentTarget.selectionStart);
-    handleChange(evt);
-  }
 
   return (
     <input
@@ -35,9 +27,10 @@ const Input: FC<InputProps> = ({
       type="text"
       id="date"
       name="date"
+      placeholder="Введите дату"
       ref={ref}
       value={date}
-      onChange={onChange}
+      onChange={handleChange}
       onKeyDown={handleKeyDown}
       onKeyPress={handleSubmit}
       autoComplete="off"

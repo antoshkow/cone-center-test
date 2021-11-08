@@ -21,6 +21,7 @@ export const secondsSelectionEnd: number = 17;
 
 export interface InputProps {
   date: string
+  cursor: number | null
   handleChange(evt: ChangeEvent<HTMLInputElement>): void
   handleKeyDown(evt: KeyboardEvent<HTMLInputElement>): void
   handleSubmit(evt: KeyboardEvent<Element>): void
