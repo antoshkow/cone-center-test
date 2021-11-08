@@ -1,29 +1,34 @@
 import React, {
-  FC, ChangeEvent, KeyboardEvent,
-  useState, useEffect, useRef,
-  useCallback
+  FC,
+  ChangeEvent,
+  KeyboardEvent,
+  useState,
 } from 'react';
 import './Input.css';
-import { getMonthName, formatDate, loopPartOfDate, formatLocaleDate } from '../../utils/utils';
+import {
+  getMonthName,
+  formatDate,
+  loopPartOfDate,
+  formatLocaleDate,
+  monthList,
+  handleSetSelectionRange
+} from '../../utils/utils';
 
 const Input: FC = () => {
   const [date, setDate] = useState<string>('');
-  const [higherPart, setHigherPart] = useState<number>(0);
-  const [incHigherPart, setIncHigherPart] = useState<number>(0);
-  const [changeDate, setChangeDate] = useState<Date | null>(null);
-  const [formattedDate, setFormattedDate] = useState<string>('');
 
-  // useEffect(() => {
-  //   setFormattedDate(date);
-  // }, [date]);
+  const changeDate: Date = new Date(date);
+
+  let day: number = changeDate.getDate();
+  let month: number = changeDate.getMonth();
+  let year: number = changeDate.getFullYear();
+  let hours: number = changeDate.getHours();
+  let minutes: number = changeDate.getMinutes();
+  let seconds: number = changeDate.getSeconds();
+
+  let incDec: number;
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    const caret = evt.currentTarget.selectionStart;
-    const input = evt.currentTarget;
-    window.requestAnimationFrame(() => {
-      input.selectionStart = caret;
-      input.selectionEnd = caret;
-    });
     setDate(evt.currentTarget.value);
   }
 
@@ -36,15 +41,7 @@ const Input: FC = () => {
     const cursor: number | null = input.selectionDirection === 'forward' ?
     selectionEnd : selectionStart;
 
-    let changeDate: string | Date | any = new Date(date);
-    let incDecChangeDate: string | Date = new Date(formattedDate);
-
-    console.log(changeDate)
-    let loopPart;
-    let newChangeDate: string | Date;
-
-    let inc: any;
-
+    let selection;
     let cursorStart;
     let cursorEnd;
 
@@ -53,9 +50,9 @@ const Input: FC = () => {
     }
 
     if (key === 'ArrowUp') {
-      inc = 1;
+      incDec = 1;
     } else if (key === 'ArrowDown') {
-      inc = -1;
+      incDec = -1;
     } else {
       return;
     }
@@ -64,23 +61,26 @@ const Input: FC = () => {
 
     // Day
     if (cursor! <= 2) {
-      let selection;
+
       selection = 'day';
       input.onselect = () => {
         input.setSelectionRange(0, 2)
       }
       if (ctrlKey) {
-        changeDate.setDate(changeDate.getDate() + inc);
-        setDate(formatLocaleDate(changeDate.toLocaleString()));
+        changeDate.setDate(day + incDec)
       }
 
       if (!ctrlKey) {
-        const loop = loopPartOfDate(changeDate, inc, selection)!
-        loopPart = loop;
-
-
-
-
+        day = changeDate.getDate() + incDec;
+        const incDate = new Date(year, month + 1, 0);
+        const lastDayOfMonth = incDate.getDate();
+        console.log(changeDate.setDate(1))
+        console.log(day);
+        if (day < 1) day = incDate.getDate();
+        if (day > incDate.getDate()) {
+          changeDate.setDate(1);
+          day = changeDate.getDate();
+        }
       }
       cursorStart = 0;
       cursorEnd = 2;
@@ -92,8 +92,8 @@ const Input: FC = () => {
       }
 
       if (ctrlKey) {
-        changeDate.setMonth(changeDate.getMonth() + inc)
-        setDate(formatLocaleDate(changeDate.toLocaleString()))
+        changeDate.setMonth(changeDate.getMonth() + incDec)
+
       }
 
       if (!ctrlKey) {
@@ -111,8 +111,8 @@ const Input: FC = () => {
       }
 
       if (ctrlKey) {
-        changeDate.setFullYear(changeDate.getFullYear() + inc)
-        setDate(formatLocaleDate(changeDate.toLocaleString()))
+        changeDate.setFullYear(changeDate.getFullYear() + incDec)
+
       }
 
       if (!ctrlKey) {
@@ -129,8 +129,8 @@ const Input: FC = () => {
       }
 
       if (ctrlKey) {
-        changeDate.setHours(changeDate.getHours() + inc)
-        setDate(formatLocaleDate(changeDate.toLocaleString()))
+        changeDate.setHours(changeDate.getHours() + incDec)
+
       }
 
       if (!ctrlKey) {
@@ -147,8 +147,8 @@ const Input: FC = () => {
       }
 
       if (ctrlKey) {
-        changeDate.setMinutes(changeDate.getMinutes() + inc)
-        setDate(formatLocaleDate(changeDate.toLocaleString()))
+        changeDate.setMinutes(changeDate.getMinutes() + incDec)
+
       }
 
       if (!ctrlKey) {
@@ -165,9 +165,9 @@ const Input: FC = () => {
       }
 
       if (ctrlKey) {
-        changeDate.setSeconds(changeDate.getSeconds() + inc)
-        console.log(changeDate.toLocaleString())
-        setDate(formatLocaleDate(changeDate.toLocaleString()))
+        changeDate.setSeconds(changeDate.getSeconds() + incDec)
+
+
       }
 
       if (!ctrlKey) {
@@ -180,6 +180,17 @@ const Input: FC = () => {
       return;
     }
 
+    if (ctrlKey) {
+      setDate(formatLocaleDate(changeDate.toLocaleString()));
+    } else {
+      const newDate: string =
+      `${day < 10 ? '0' + day : day}/${monthList[month]}/${year} ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`
+      console.log(newDate)
+      setDate(newDate);
+    }
+
+
+    // setDate(formatLocaleDate(changeDate.toLocaleString()));
     window.requestAnimationFrame(() => {
       input.selectionStart = selectionStart;
       input.selectionEnd = selectionStart;
@@ -187,8 +198,6 @@ const Input: FC = () => {
     input.setSelectionRange(cursorStart, cursorEnd);
     input.selectionStart = cursorStart;
     input.selectionEnd = cursorEnd;
-
-        return loopPart
   }
 
 
@@ -197,7 +206,6 @@ const Input: FC = () => {
   const handleSubmit = (evt: KeyboardEvent) => {
     if (evt.key === 'Enter') {
       setDate(formatDate(date));
-      setFormattedDate(formatDate(date));
     }
   }
 

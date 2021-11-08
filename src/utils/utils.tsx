@@ -1,4 +1,4 @@
-const monthList: string[] = [
+export const monthList: string[] = [
   'January', 'February', 'March',
   'April', 'May', 'June',
   'July', 'August', 'September',
@@ -103,3 +103,27 @@ export const formatLocaleDate = (date: string) => {
 
   return formatDate;
 }
+
+export const handleSetSelectionRange = (element: HTMLInputElement, start: number, end: number) => {
+  element.setSelectionRange(start, end);
+}
+// const changePartOfDateForLoop = (selection: string, date: Date, incDec: number) => {
+//   let loopPart;
+//   if (selection === 'day') {
+//     loopPart = date.setDate(day + incDec)
+//   } else if (selection === 'month') {
+
+//   } else if (selection === 'year') {
+
+//   } else if (selection === 'hours') {
+
+//   } else if (selection === 'minutes') {
+
+//   } else if (selection === 'seconds') {
+
+//   } else {
+//     return;
+//   }
+
+//   return loopPart
+// }
