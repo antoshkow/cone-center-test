@@ -25,4 +25,4 @@
   - Typescript
   - React hooks
 
-6. [Ссылка на gh-pages.]( "Ссылка на деплой.")
+6. [Ссылка на gh-pages.](https://antoshkow.github.io/cone-center-test/ "Ссылка на деплой.")
