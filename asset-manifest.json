@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/cone-center-test/static/css/main.14a6795d.chunk.css",
+    "main.js": "/cone-center-test/static/js/main.202d820c.chunk.js",
+    "main.js.map": "/cone-center-test/static/js/main.202d820c.chunk.js.map",
+    "runtime-main.js": "/cone-center-test/static/js/runtime-main.98d34519.js",
+    "runtime-main.js.map": "/cone-center-test/static/js/runtime-main.98d34519.js.map",
+    "static/js/2.407b220b.chunk.js": "/cone-center-test/static/js/2.407b220b.chunk.js",
+    "static/js/2.407b220b.chunk.js.map": "/cone-center-test/static/js/2.407b220b.chunk.js.map",
+    "index.html": "/cone-center-test/index.html",
+    "static/css/main.14a6795d.chunk.css.map": "/cone-center-test/static/css/main.14a6795d.chunk.css.map",
+    "static/js/2.407b220b.chunk.js.LICENSE.txt": "/cone-center-test/static/js/2.407b220b.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.98d34519.js",
+    "static/js/2.407b220b.chunk.js",
+    "static/css/main.14a6795d.chunk.css",
+    "static/js/main.202d820c.chunk.js"
+  ]
+}
