@@ -1,62 +1,108 @@
-export const monthList: string[] = [
-  'January', 'February', 'March',
-  'April', 'May', 'June',
-  'July', 'August', 'September',
-  'October', 'November', 'December'
-];
+import { monthList } from './constants';
 
 export const getMonthName = (date: Date) => {
   return monthList[date.getMonth()];
 }
 
+export const loopPartOfDate = (
+  // year: number,
+  // month: number,
+  // higherPart: number,
+  // smallerPart: number,
+  // date: Date,
+  // handleDetDate: (this: Date) => number,
+  // handleSetDate: (this: Date, value: number) => void,
+  // mod: number,
+  // selection: string
 
-
-export const loopPartOfDate = (date: Date, incDec: number, selection: string) => {
-  let value = 0;
-
-  const day = date.getDate();
-  const month = date.getMonth();
-  const year = date.getFullYear();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const seconds = date.getSeconds();
-
+  day: number,
+  month: number,
+  year: number,
+  hours: number,
+  minutes: number,
+  seconds: number,
+  date: Date,
+  selection: string,
+  mod: number
+) => {
+  let newDate: Date;
   if (selection === 'day') {
-    // for (let i = 1; i >= 1 && i <= 31; i++) {
-    //   date.setDate(day + incDec);
-    //   value = date.getDate();
-    // }
-    date.setDate(day + incDec);
-    value = date.getDate();
-    console.log(value);
-    // if (value === 31) date.setDate(0);
-    // if (value === ) date.setDate(day);
-  } else if (selection === 'month') {
-    date.setMonth(month + incDec);
-    value = date.getMonth();
-    // if (value === 12 ) value = 0;
-    // if (value === -1) value = 11;
-  } else if (selection === 'year') {
-    date.setFullYear(year + incDec);
-    value = date.getFullYear();
-  } else if (selection === 'hours') {
-    date.setHours(hours + incDec);
-    value = date.getHours();
-  } else if (selection === 'minutes') {
-    date.setMinutes(minutes + incDec);
-    value = date.getMinutes();
-  } else if (selection === 'seconds') {
-    date.setSeconds(seconds + incDec);
-    value = date.getSeconds();
-  } else {
-    return;
+    day = date.getDate() + mod;
+    newDate = new Date(year, month + 1, 0);
+    if (day < 1) day = newDate.getDate();
+    if (day > newDate.getDate()) {
+      date.setDate(1);
+      day = date.getDate();
+    }
+
+    return day;
   }
-  return value
+  if (selection === 'month') {
+    month = date.getMonth() + mod;
+    newDate = new Date(year + 1, -1, day);
+    if (month < 0) month = newDate.getMonth();
+    if (month > newDate.getMonth()) {
+      date.setMonth(0);
+      month = date.getMonth();
+    }
+
+    return month;
+  }
+  if (selection === 'year') {
+    year = date.getFullYear() + mod;
+
+    return year;
+  }
+  if (selection === 'hours') {
+    hours = date.getHours() + mod;
+    newDate = new Date(year, month, day + 1, -1);
+    if (hours < 0) hours = newDate.getHours();
+    if (hours > newDate.getHours()) {
+      date.setHours(0);
+      hours = date.getHours();
+    }
+
+    return hours;
+  }
+  if (selection === 'minutes') {
+    minutes = date.getMinutes() + mod;
+    newDate = new Date(year, month, day, hours + 1, -1);
+    if (minutes < 0) minutes = newDate.getMinutes();
+    if (minutes > newDate.getMinutes()) {
+      date.setMinutes(0);
+      minutes = date.getMinutes();
+    }
+
+    return minutes;
+  }
+  if (selection === 'seconds') {
+    seconds = date.getSeconds() + mod;
+    newDate = new Date(year, month, day, hours, minutes + 1, -1);
+    if (seconds < 0) seconds = newDate.getSeconds();
+    if (seconds > newDate.getSeconds()) {
+      date.setSeconds(0);
+      seconds = date.getSeconds();
+    }
+
+    return seconds;
+  }
 }
 
+export const formatDate = (
+  day: number,
+  month: number,
+  year: number,
+  hours: number,
+  minutes: number,
+  seconds: number
+) => {
+  const formatDate =
+  `${day < 10 ? '0' + day : day}/${monthList[month]}/${year} ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 
+return formatDate;
+}
 
-export const formatDate = (date: string) => {
+export const formatInputDate = (date: string) => {
   const inputDate: Array<string> = date.split(/\W/);
   const day: string = inputDate.slice(0, 1).toString();
   const month: string = inputDate.slice(1, 2).toString();
@@ -74,10 +120,16 @@ export const formatDate = (date: string) => {
   const newMinutes = newDate.getMinutes();
   const newSeconds = newDate.getSeconds();
 
-  const formatDate =
-    `${newDay < 10 ? '0' + newDay : newDay}/${monthList[newMonth]}/${newYear} ${newHours < 10 ? '0' + newHours : newHours}:${newMinutes < 10 ? '0' + newMinutes : newMinutes}:${newSeconds < 10 ? '0' + newSeconds : newSeconds}`;
+  const currentDate: string = formatDate(
+    newDay,
+    newMonth,
+    newYear,
+    newHours,
+    newMinutes,
+    newSeconds
+  );
 
-  return formatDate;
+  return currentDate;
 }
 
 export const formatLocaleDate = (date: string) => {
@@ -98,32 +150,21 @@ export const formatLocaleDate = (date: string) => {
   const newMinutes = newDate.getMinutes();
   const newSeconds = newDate.getSeconds();
 
-  const formatDate =
-    `${newDay < 10 ? '0' + newDay : newDay}/${monthList[newMonth]}/${newYear} ${newHours < 10 ? '0' + newHours : newHours}:${newMinutes < 10 ? '0' + newMinutes : newMinutes}:${newSeconds < 10 ? '0' + newSeconds : newSeconds}`;
+  const currentDate: string = formatDate(
+    newDay,
+    newMonth,
+    newYear,
+    newHours,
+    newMinutes,
+    newSeconds
+  );
 
-  return formatDate;
+  return currentDate;
 }
 
 export const handleSetSelectionRange = (element: HTMLInputElement, start: number, end: number) => {
-  element.setSelectionRange(start, end);
+  element.onselect = () => {
+    console.log(start, end)
+    element.setSelectionRange(start, end);
+  }
 }
-// const changePartOfDateForLoop = (selection: string, date: Date, incDec: number) => {
-//   let loopPart;
-//   if (selection === 'day') {
-//     loopPart = date.setDate(day + incDec)
-//   } else if (selection === 'month') {
-
-//   } else if (selection === 'year') {
-
-//   } else if (selection === 'hours') {
-
-//   } else if (selection === 'minutes') {
-
-//   } else if (selection === 'seconds') {
-
-//   } else {
-//     return;
-//   }
-
-//   return loopPart
-// }

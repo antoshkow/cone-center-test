@@ -1,213 +1,282 @@
-import React, {
-  FC,
-  ChangeEvent,
-  KeyboardEvent,
-  useState,
-} from 'react';
+import React, { FC } from 'react';
 import './Input.css';
-import {
-  getMonthName,
-  formatDate,
-  loopPartOfDate,
-  formatLocaleDate,
-  monthList,
-  handleSetSelectionRange
-} from '../../utils/utils';
+import { InputProps } from '../../utils/constants';
 
-const Input: FC = () => {
-  const [date, setDate] = useState<string>('');
+const Input: FC<InputProps> = ({
+  date,
+  handleChange,
+  handleKeyDown,
+  handleSubmit
+}) => {
+  // const [date, setDate] = useState<string>('');
 
-  const changeDate: Date = new Date(date);
+  // const changeDate: Date | string = new Date(date);
 
-  let day: number = changeDate.getDate();
-  let month: number = changeDate.getMonth();
-  let year: number = changeDate.getFullYear();
-  let hours: number = changeDate.getHours();
-  let minutes: number = changeDate.getMinutes();
-  let seconds: number = changeDate.getSeconds();
+  // let day: number = changeDate.getDate();
+  // let month: number = changeDate.getMonth();
+  // let year: number = changeDate.getFullYear();
+  // let hours: number = changeDate.getHours();
+  // let minutes: number = changeDate.getMinutes();
+  // let seconds: number = changeDate.getSeconds();
 
-  let incDec: number;
+  // let mod: number;
 
-  const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setDate(evt.currentTarget.value);
-  }
+  // const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
+  //   handleChange(evt.currentTarget.value);
+  // }
 
-  const handleKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
-    const key = evt.key;
-    const input = evt.currentTarget;
-    const ctrlKey = evt.ctrlKey;
-    let selectionStart = input.selectionStart;
-    let selectionEnd = input.selectionEnd;
-    const cursor: number | null = input.selectionDirection === 'forward' ?
-    selectionEnd : selectionStart;
+  // const handleKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
+  //   const key = evt.key;
+  //   const input = evt.currentTarget;
+  //   const ctrlKey = evt.ctrlKey;
+  //   let selectionStart = input.selectionStart;
+  //   let selectionEnd = input.selectionEnd;
+  //   const cursor: number | null = input.selectionDirection === 'forward' ?
+  //   selectionEnd : selectionStart;
 
-    let selection;
-    let cursorStart;
-    let cursorEnd;
+  //   let selection;
+  //   let cursorStart: number;
+  //   let cursorEnd: number;
 
-    if (cursor === null) {
-      return;
-    }
+  //   // const currentMonthLength: number = getMonthName(changeDate).length || 0;
 
-    if (key === 'ArrowUp') {
-      incDec = 1;
-    } else if (key === 'ArrowDown') {
-      incDec = -1;
-    } else {
-      return;
-    }
+  //   // console.log(currentMonthLength)
 
-    evt.preventDefault();
+  //   handleSetSelectionRange(input, selectionStart!, selectionEnd!);
 
-    // Day
-    if (cursor! <= 2) {
+  //   if (key === 'ArrowUp') {
+  //     mod = 1;
+  //   } else if (key === 'ArrowDown') {
+  //     mod = -1;
+  //   } else {
+  //     return;
+  //   }
 
-      selection = 'day';
-      input.onselect = () => {
-        input.setSelectionRange(0, 2)
-      }
-      if (ctrlKey) {
-        changeDate.setDate(day + incDec)
-      }
+  //   console.log(cursor)
 
-      if (!ctrlKey) {
-        day = changeDate.getDate() + incDec;
-        const incDate = new Date(year, month + 1, 0);
-        const lastDayOfMonth = incDate.getDate();
-        console.log(changeDate.setDate(1))
-        console.log(day);
-        if (day < 1) day = incDate.getDate();
-        if (day > incDate.getDate()) {
-          changeDate.setDate(1);
-          day = changeDate.getDate();
-        }
-      }
-      cursorStart = 0;
-      cursorEnd = 2;
+  //   evt.preventDefault();
+  //   if (cursor === null) {
+  //     return;
 
-      // Month
-    } else if (cursor >= 3 && cursor <= 3 + getMonthName(changeDate).length) {
-      input.onselect = () => {
-        input.setSelectionRange(3, 3 + getMonthName(changeDate).length)
-      }
+  //     // Day
+  //   } else if (cursor! <= daySelectionEnd) {
+  //     selection = 'day';
 
-      if (ctrlKey) {
-        changeDate.setMonth(changeDate.getMonth() + incDec)
+  //     handleSetSelectionRange(input, daySelectionStart, daySelectionEnd);
 
-      }
+  //     if (!ctrlKey) {
+  //       day = loopPartOfDate(
+  //       day,
+  //       month,
+  //       year,
+  //       hours,
+  //       minutes,
+  //       seconds,
+  //       changeDate,
+  //       selection,
+  //       mod
+  //     )!;
+  //       }
 
-      if (!ctrlKey) {
+  //     if (ctrlKey) {
+  //       changeDate.setDate(day + mod);
+  //     }
 
-        setDate(formatLocaleDate(changeDate.toLocaleString()))
-      }
+  //     cursorStart = daySelectionStart;
+  //     cursorEnd = daySelectionEnd;
 
-      cursorStart = 3
-      cursorEnd = 3 + getMonthName(changeDate).length;
+  //     // Month
+  //   } else if (cursor >= monthSelectionStart && cursor <= monthSelectionStart + getMonthName(changeDate).length) {
+  //     selection = 'month';
 
-      // Year
-    } else if (cursor >= 4 + getMonthName(changeDate).length && cursor <= 8 + getMonthName(changeDate).length) {
-      input.onselect = () => {
-        input.setSelectionRange(4 + getMonthName(changeDate).length, 8 + getMonthName(changeDate).length)
-      }
+  //     handleSetSelectionRange(input, monthSelectionStart, monthSelectionStart + getMonthName(changeDate).length);
 
-      if (ctrlKey) {
-        changeDate.setFullYear(changeDate.getFullYear() + incDec)
+  //     if (!ctrlKey) {
+  //       handleSetSelectionRange(input, monthSelectionStart, monthSelectionStart + getMonthName(changeDate).length);
+  //       month = loopPartOfDate(
+  //       day,
+  //       month,
+  //       year,
+  //       hours,
+  //       minutes,
+  //       seconds,
+  //       changeDate,
+  //       selection,
+  //       mod
+  //     )!;
 
-      }
+  //     handleSetSelectionRange(input, monthSelectionStart, monthSelectionStart + monthList[month].length);
+  //       }
 
-      if (!ctrlKey) {
+  //     if (ctrlKey) {
+  //       changeDate.setMonth(month + mod);
+  //       handleSetSelectionRange(input, monthSelectionStart, monthSelectionStart + getMonthName(changeDate).length);
+  //     }
 
-      }
+  //     cursorStart = monthSelectionStart;
+  //     cursorEnd = monthSelectionStart + getMonthName(changeDate).length;
 
-      cursorStart = 4
-      cursorEnd = 8 + getMonthName(changeDate).length;
+  //     // Year
+  //   } else if (cursor >= yearSelectionStart + getMonthName(changeDate).length && cursor <= yearSelectionEnd + getMonthName(changeDate).length) {
+  //     selection = 'year';
 
-      // Hour
-    } else if (cursor >= 9 + getMonthName(changeDate).length && cursor <= 11 + getMonthName(changeDate).length) {
-      input.onselect = () => {
-        input.setSelectionRange(9 + getMonthName(changeDate).length, 11 + getMonthName(changeDate).length)
-      }
+  //     handleSetSelectionRange(input, yearSelectionStart + getMonthName(changeDate).length, yearSelectionEnd + getMonthName(changeDate).length);
 
-      if (ctrlKey) {
-        changeDate.setHours(changeDate.getHours() + incDec)
+  //     if (!ctrlKey) {
+  //       year = loopPartOfDate(
+  //         day,
+  //         month,
+  //         year,
+  //         hours,
+  //         minutes,
+  //         seconds,
+  //         changeDate,
+  //         selection,
+  //         mod
+  //       )!;
+  //     }
 
-      }
+  //     if (ctrlKey) {
+  //       changeDate.setFullYear(year + mod);
+  //     }
 
-      if (!ctrlKey) {
+  //     cursorStart = yearSelectionStart;
+  //     cursorEnd = yearSelectionEnd + getMonthName(changeDate).length;
 
-      }
+  //     // Hours
+  //   } else if (cursor >= hoursSelectionStart + getMonthName(changeDate).length && cursor <= hoursSelectionEnd + getMonthName(changeDate).length) {
+  //     selection = 'hours';
 
-      cursorStart = 9
-      cursorEnd = 11 + getMonthName(changeDate).length;
+  //     handleSetSelectionRange(input, hoursSelectionStart + getMonthName(changeDate).length, hoursSelectionEnd + getMonthName(changeDate).length);
 
-      // Minute
-    } else if (cursor >= 12 + getMonthName(changeDate).length && cursor <= 14 + getMonthName(changeDate).length) {
-      input.onselect = () => {
-        input.setSelectionRange(12 + getMonthName(changeDate).length, 14 + getMonthName(changeDate).length)
-      }
+  //     if (!ctrlKey) {
+  //       hours = loopPartOfDate(
+  //       day,
+  //       month,
+  //       year,
+  //       hours,
+  //       minutes,
+  //       seconds,
+  //       changeDate,
+  //       selection,
+  //       mod
+  //     )!;
+  //       }
 
-      if (ctrlKey) {
-        changeDate.setMinutes(changeDate.getMinutes() + incDec)
+  //     if (ctrlKey) {
+  //       changeDate.setHours(hours + mod);
+  //     }
 
-      }
+  //     cursorStart = hoursSelectionStart;
+  //     cursorEnd = hoursSelectionEnd + getMonthName(changeDate).length;
 
-      if (!ctrlKey) {
+  //     // Minutes
+  //   } else if (cursor >= 12 + getMonthName(changeDate).length && cursor <= 14 + getMonthName(changeDate).length) {
+  //     selection = 'minutes';
 
-      }
+  //     handleSetSelectionRange(input, minutesSelectionStart + getMonthName(changeDate).length, minutesSelectionEnd + getMonthName(changeDate).length);
 
-      cursorStart = 12
-      cursorEnd = 14 + getMonthName(changeDate).length;
+  //     if (!ctrlKey) {
+  //       minutes = loopPartOfDate(
+  //       day,
+  //       month,
+  //       year,
+  //       hours,
+  //       minutes,
+  //       seconds,
+  //       changeDate,
+  //       selection,
+  //       mod
+  //     )!;
+  //       }
 
-      // Second
-    } else if (cursor >= 15 + getMonthName(changeDate).length && cursor <= 17 + getMonthName(changeDate).length) {
-      input.onselect = () => {
-        input.setSelectionRange(15 + getMonthName(changeDate).length, 17 + getMonthName(changeDate).length)
-      }
+  //     if (ctrlKey) {
+  //       changeDate.setMinutes(minutes + mod);
+  //     }
 
-      if (ctrlKey) {
-        changeDate.setSeconds(changeDate.getSeconds() + incDec)
+  //     cursorStart = minutesSelectionStart
+  //     cursorEnd = minutesSelectionEnd + getMonthName(changeDate).length;
 
+  //     // Seconds
+  //   } else if (cursor >= 15 + getMonthName(changeDate).length && cursor <= 17 + getMonthName(changeDate).length) {
+  //     selection = 'seconds';
 
-      }
+  //     handleSetSelectionRange(input, secondsSelectionStart + getMonthName(changeDate).length, secondsSelectionEnd + getMonthName(changeDate).length);
 
-      if (!ctrlKey) {
+  //     if (!ctrlKey) {
+  //       seconds = loopPartOfDate(
+  //       day,
+  //       month,
+  //       year,
+  //       hours,
+  //       minutes,
+  //       seconds,
+  //       changeDate,
+  //       selection,
+  //       mod
+  //     )!;
+  //       }
 
-      }
+  //     if (ctrlKey) {
+  //       changeDate.setSeconds(seconds + mod);
+  //     }
+  //     loopPartOfDate(
+  //       day,
+  //       month,
+  //       year,
+  //       hours,
+  //       minutes,
+  //       seconds,
+  //       changeDate,
+  //       selection,
+  //       mod
+  //     );
+  //     cursorStart = secondsSelectionStart
+  //     cursorEnd = secondsSelectionEnd + getMonthName(changeDate).length;
+  //   } else {
+  //     return;
+  //   }
 
-      cursorStart = 15
-      cursorEnd = 17 + getMonthName(changeDate).length;
-    } else {
-      return;
-    }
+  //   if (ctrlKey) {
+  //     setDate(formatLocaleDate(changeDate.toLocaleString()));
+  //   } else if (!changeDate) {
+  //     setDate('Введите корректную дату!')
+  //   } else {
+  //     const formattedDate: string = formatDate(
+  //       day,
+  //       month,
+  //       year,
+  //       hours,
+  //       minutes,
+  //       seconds
+  //     );
 
-    if (ctrlKey) {
-      setDate(formatLocaleDate(changeDate.toLocaleString()));
-    } else {
-      const newDate: string =
-      `${day < 10 ? '0' + day : day}/${monthList[month]}/${year} ${hours < 10 ? '0' + hours : hours}:${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`
-      console.log(newDate)
-      setDate(newDate);
-    }
+  //     setDate(formattedDate);
+  //   }
 
+  //   window.requestAnimationFrame(() => {
+  //     input.selectionStart = selectionStart;
+  //     input.selectionEnd = selectionStart;
+  //   });
+  //   input.setSelectionRange(cursorStart, cursorEnd);
+  //   input.selectionStart = cursorStart;
+  //   input.selectionEnd = cursorEnd;
+  // }
 
-    // setDate(formatLocaleDate(changeDate.toLocaleString()));
-    window.requestAnimationFrame(() => {
-      input.selectionStart = selectionStart;
-      input.selectionEnd = selectionStart;
-    });
-    input.setSelectionRange(cursorStart, cursorEnd);
-    input.selectionStart = cursorStart;
-    input.selectionEnd = cursorEnd;
-  }
+  // const handleSubmit = (evt: KeyboardEvent) => {
+  //   if (evt.key === 'Enter') {
+  //     setDate(formatInputDate(date));
+  //   }
+  // }
 
-
-
-
-  const handleSubmit = (evt: KeyboardEvent) => {
-    if (evt.key === 'Enter') {
-      setDate(formatDate(date));
-    }
-  }
+  // useEffect(() => {
+  //   if (date.includes('undefined')) {
+  //     setDate('Формат даты: day month year time');
+  //     setTimeout(() => {
+  //       setDate('');
+  //     }, 2000)
+  //   }
+  // }, [date])
 
   return (
     <input
