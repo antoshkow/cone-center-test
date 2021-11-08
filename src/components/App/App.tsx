@@ -36,10 +36,6 @@ const App: FC = () => {
 
   const changeDate: Date | string = new Date(date);
 
-  const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    setDate(evt.currentTarget.value);
-  }
-
   let day: number = changeDate.getDate();
   let month: number = changeDate.getMonth();
   let year: number = changeDate.getFullYear();
@@ -48,6 +44,10 @@ const App: FC = () => {
   let seconds: number = changeDate.getSeconds();
 
   let mod: number;
+
+  const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setDate(evt.currentTarget.value);
+  }
 
   const handleInputKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
     const key = evt.key;
@@ -58,15 +58,9 @@ const App: FC = () => {
     const cursor: number | null = input.selectionDirection === 'forward' ?
     selectionEnd : selectionStart;
 
-    let selection;
+    let selection: string;
     let cursorStart: number;
     let cursorEnd: number;
-
-    // const currentMonthLength: number = getMonthName(changeDate).length || 0;
-
-    // console.log(currentMonthLength)
-
-    handleSetSelectionRange(input, selectionStart!, selectionEnd!);
 
     if (key === 'ArrowUp') {
       mod = 1;
@@ -76,34 +70,31 @@ const App: FC = () => {
       return;
     }
 
-    console.log(cursor)
-
     evt.preventDefault();
+
     if (cursor === null) {
       return;
 
       // Day
-    } else if (cursor! <= daySelectionEnd) {
+    } else if (cursor <= daySelectionEnd) {
       selection = 'day';
 
       handleSetSelectionRange(input, daySelectionStart, daySelectionEnd);
 
-      if (!ctrlKey) {
-        day = loopPartOfDate(
-        day,
-        month,
-        year,
-        hours,
-        minutes,
-        seconds,
-        changeDate,
-        selection,
-        mod
-      )!;
-        }
-
       if (ctrlKey) {
         changeDate.setDate(day + mod);
+      } else {
+        day = loopPartOfDate(
+          day,
+          month,
+          year,
+          hours,
+          minutes,
+          seconds,
+          changeDate,
+          selection,
+          mod
+        )!;
       }
 
       cursorStart = daySelectionStart;
@@ -113,28 +104,24 @@ const App: FC = () => {
     } else if (cursor >= monthSelectionStart && cursor <= monthSelectionStart + getMonthName(changeDate).length) {
       selection = 'month';
 
-      handleSetSelectionRange(input, monthSelectionStart, monthSelectionStart + getMonthName(changeDate).length);
-
-      if (!ctrlKey) {
-        handleSetSelectionRange(input, monthSelectionStart, monthSelectionStart + getMonthName(changeDate).length);
-        month = loopPartOfDate(
-        day,
-        month,
-        year,
-        hours,
-        minutes,
-        seconds,
-        changeDate,
-        selection,
-        mod
-      )!;
-
-      handleSetSelectionRange(input, monthSelectionStart, monthSelectionStart + monthList[month].length);
-        }
-
       if (ctrlKey) {
         changeDate.setMonth(month + mod);
+
         handleSetSelectionRange(input, monthSelectionStart, monthSelectionStart + getMonthName(changeDate).length);
+      } else {
+        month = loopPartOfDate(
+          day,
+          month,
+          year,
+          hours,
+          minutes,
+          seconds,
+          changeDate,
+          selection,
+          mod
+        )!;
+
+        handleSetSelectionRange(input, monthSelectionStart, monthSelectionStart + monthList[month].length);
       }
 
       cursorStart = monthSelectionStart;
@@ -146,7 +133,9 @@ const App: FC = () => {
 
       handleSetSelectionRange(input, yearSelectionStart + getMonthName(changeDate).length, yearSelectionEnd + getMonthName(changeDate).length);
 
-      if (!ctrlKey) {
+      if (ctrlKey) {
+        changeDate.setFullYear(year + mod);
+      } else {
         year = loopPartOfDate(
           day,
           month,
@@ -160,10 +149,6 @@ const App: FC = () => {
         )!;
       }
 
-      if (ctrlKey) {
-        changeDate.setFullYear(year + mod);
-      }
-
       cursorStart = yearSelectionStart;
       cursorEnd = yearSelectionEnd + getMonthName(changeDate).length;
 
@@ -173,22 +158,20 @@ const App: FC = () => {
 
       handleSetSelectionRange(input, hoursSelectionStart + getMonthName(changeDate).length, hoursSelectionEnd + getMonthName(changeDate).length);
 
-      if (!ctrlKey) {
-        hours = loopPartOfDate(
-        day,
-        month,
-        year,
-        hours,
-        minutes,
-        seconds,
-        changeDate,
-        selection,
-        mod
-      )!;
-        }
-
       if (ctrlKey) {
         changeDate.setHours(hours + mod);
+      } else {
+        hours = loopPartOfDate(
+          day,
+          month,
+          year,
+          hours,
+          minutes,
+          seconds,
+          changeDate,
+          selection,
+          mod
+        )!;
       }
 
       cursorStart = hoursSelectionStart;
@@ -200,22 +183,20 @@ const App: FC = () => {
 
       handleSetSelectionRange(input, minutesSelectionStart + getMonthName(changeDate).length, minutesSelectionEnd + getMonthName(changeDate).length);
 
-      if (!ctrlKey) {
-        minutes = loopPartOfDate(
-        day,
-        month,
-        year,
-        hours,
-        minutes,
-        seconds,
-        changeDate,
-        selection,
-        mod
-      )!;
-        }
-
       if (ctrlKey) {
         changeDate.setMinutes(minutes + mod);
+      } else {
+        minutes = loopPartOfDate(
+          day,
+          month,
+          year,
+          hours,
+          minutes,
+          seconds,
+          changeDate,
+          selection,
+          mod
+        )!;
       }
 
       cursorStart = minutesSelectionStart
@@ -227,34 +208,22 @@ const App: FC = () => {
 
       handleSetSelectionRange(input, secondsSelectionStart + getMonthName(changeDate).length, secondsSelectionEnd + getMonthName(changeDate).length);
 
-      if (!ctrlKey) {
-        seconds = loopPartOfDate(
-        day,
-        month,
-        year,
-        hours,
-        minutes,
-        seconds,
-        changeDate,
-        selection,
-        mod
-      )!;
-        }
-
       if (ctrlKey) {
         changeDate.setSeconds(seconds + mod);
+      } else {
+        seconds = loopPartOfDate(
+          day,
+          month,
+          year,
+          hours,
+          minutes,
+          seconds,
+          changeDate,
+          selection,
+          mod
+        )!;
       }
-      loopPartOfDate(
-        day,
-        month,
-        year,
-        hours,
-        minutes,
-        seconds,
-        changeDate,
-        selection,
-        mod
-      );
+
       cursorStart = secondsSelectionStart
       cursorEnd = secondsSelectionEnd + getMonthName(changeDate).length;
     } else {
@@ -263,8 +232,6 @@ const App: FC = () => {
 
     if (ctrlKey) {
       setDate(formatLocaleDate(changeDate.toLocaleString()));
-    } else if (!changeDate) {
-      setDate('Введите корректную дату!')
     } else {
       const formattedDate: string = formatDate(
         day,
@@ -277,7 +244,7 @@ const App: FC = () => {
 
       setDate(formattedDate);
     }
-    input.setSelectionRange(cursorStart, cursorEnd);
+
     input.selectionStart = cursorStart;
     input.selectionEnd = cursorEnd;
   }
