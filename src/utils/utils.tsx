@@ -99,53 +99,22 @@ export const formatInputDate = (date: string) => {
   const day: string = inputDate.slice(0, 1).toString();
   const month: string = inputDate.slice(1, 2).toString();
   let year: string = inputDate.slice(2, 3).toString();
-  let hour: string = inputDate.slice(3, 4).toString();
-  let minute: string = inputDate.slice(4, 5).toString();
-  let second: string = inputDate.slice(5, 6).toString();
+  let hours: string = inputDate.slice(3, 4).toString();
+  let minutes: string = inputDate.slice(4, 5).toString();
+  let seconds: string = inputDate.slice(5, 6).toString();
 
-  if (Number(hour) > 23) {
-    second = minute
-    minute = hour
-    hour = year;
-    year = '2021'
+  if (Number(hours) > 23) {
+    seconds = minutes;
+    minutes = hours;
+    hours = year;
+    year = '2021';
   }
   if (!year) {
-    year = '2021'
+    year = '2021';
   }
 
   const newDate = new Date(
-    `${month} ${day} ${year} ${hour}:${minute}:${second}`
-  );
-  const newDay =  newDate.getDate();
-  const newMonth = newDate.getMonth();
-  const newYear = newDate.getFullYear();
-  const newHours = newDate.getHours();
-  const newMinutes = newDate.getMinutes();
-  const newSeconds = newDate.getSeconds();
-
-  const currentDate: string = formatDate(
-    newDay,
-    newMonth,
-    newYear,
-    newHours,
-    newMinutes,
-    newSeconds
-  );
-
-  return currentDate;
-}
-
-export const formatLocaleDate = (date: string) => {
-  const inputDate: Array<string> = date.split(/\W/);
-  const day: string = inputDate.slice(0, 1).toString();
-  const month: string = inputDate.slice(1, 2).toString();
-  const year: string = inputDate.slice(2, 3).toString();
-  const hour: string = inputDate.slice(4, 5).toString();
-  const minute: string = inputDate.slice(5, 6).toString();
-  const second: string = inputDate.slice(6, 7).toString();
-
-  const newDate = new Date(
-    `${month} ${day} ${year} ${hour}:${minute}:${second}`
+    `${month} ${day} ${year} ${hours}:${minutes}:${seconds}`
   );
   const newDay =  newDate.getDate();
   const newMonth = newDate.getMonth();
