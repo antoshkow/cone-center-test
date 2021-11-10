@@ -94,42 +94,54 @@ export const formatDate = (
 return formatDate;
 }
 
+const handleRegExp = (month: string) => {
+  return /^[a-zA-Z]*$/.test(month);
+}
+
 export const formatInputDate = (date: string) => {
   const inputDate: Array<string> = date.split(/\W/);
-  const day: string = inputDate.slice(0, 1).toString();
-  const month: string = inputDate.slice(1, 2).toString();
-  let year: string = inputDate.slice(2, 3).toString();
-  let hours: string = inputDate.slice(3, 4).toString();
-  let minutes: string = inputDate.slice(4, 5).toString();
-  let seconds: string = inputDate.slice(5, 6).toString();
+  const day: number = Number(inputDate.slice(0, 1));
+  let month: string = inputDate.slice(1, 2).toString();
+  let year: number = Number(inputDate.slice(2, 3));
+  let hours: number = Number(inputDate.slice(3, 4));
+  let minutes: number = Number(inputDate.slice(4, 5));
+  let seconds: number = Number(inputDate.slice(5, 6));
+  let monthIndex: number;
+
+
 
   if (Number(hours) > 23) {
     seconds = minutes;
     minutes = hours;
     hours = year;
-    year = '2021';
-  }
-  if (!year) {
-    year = '2021';
+    year = 2021;
   }
 
-  const newDate = new Date(
-    `${month} ${day} ${year} ${hours}:${minutes}:${seconds}`
-  );
-  const newDay =  newDate.getDate();
-  const newMonth = newDate.getMonth();
-  const newYear = newDate.getFullYear();
-  const newHours = newDate.getHours();
-  const newMinutes = newDate.getMinutes();
-  const newSeconds = newDate.getSeconds();
+  if (!year) {
+    year = 2021;
+  } else if (year.toString().length === 2) {
+    if (Number(year) <= 50) {
+      year = Number(`20${year}`);
+    } else if (Number(year) >= 50) {
+      year = Number(`19${year}`);
+    }
+  }
+
+  if (handleRegExp(month)) {
+    monthIndex = monthList.findIndex((monthName) => {
+      return monthName.toLowerCase().includes(month);
+    });
+  } else {
+    monthIndex = Number(month) - 1;
+  }
 
   const currentDate: string = formatDate(
-    newDay,
-    newMonth,
-    newYear,
-    newHours,
-    newMinutes,
-    newSeconds
+    day,
+    monthIndex,
+    year,
+    hours,
+    minutes,
+    seconds
   );
 
   return currentDate;
