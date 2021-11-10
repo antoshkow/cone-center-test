@@ -51,7 +51,7 @@ const App: FC = () => {
   }
 
   const handleInputKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
-    const key = evt.key;
+    const code = evt.code;
     const input = evt.currentTarget;
     const ctrlKey = evt.ctrlKey;
     let selectionStart = input.selectionStart;
@@ -61,10 +61,10 @@ const App: FC = () => {
 
     let selection: string;
 
-    if (key === 'ArrowUp') {
+    if (code === 'ArrowUp') {
       mod = 1;
       setCursor(selectionStart);
-    } else if (key === 'ArrowDown') {
+    } else if (code === 'ArrowDown') {
       mod = -1;
       setCursor(selectionStart);
     } else {
