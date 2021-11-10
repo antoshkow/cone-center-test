@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/cone-center-test/static/css/main.14a6795d.chunk.css",
-    "main.js": "/cone-center-test/static/js/main.481fb364.chunk.js",
-    "main.js.map": "/cone-center-test/static/js/main.481fb364.chunk.js.map",
+    "main.js": "/cone-center-test/static/js/main.a55b56a5.chunk.js",
+    "main.js.map": "/cone-center-test/static/js/main.a55b56a5.chunk.js.map",
     "runtime-main.js": "/cone-center-test/static/js/runtime-main.98d34519.js",
     "runtime-main.js.map": "/cone-center-test/static/js/runtime-main.98d34519.js.map",
     "static/js/2.407b220b.chunk.js": "/cone-center-test/static/js/2.407b220b.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.98d34519.js",
     "static/js/2.407b220b.chunk.js",
     "static/css/main.14a6795d.chunk.css",
-    "static/js/main.481fb364.chunk.js"
+    "static/js/main.a55b56a5.chunk.js"
   ]
 }
