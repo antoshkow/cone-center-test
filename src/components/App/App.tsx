@@ -11,7 +11,6 @@ import {
   getMonthName,
   formatInputDate,
   loopPartOfDate,
-  formatLocaleDate,
   handleSetSelectionRange,
   formatDate
 } from '../../utils/utils';
@@ -215,7 +214,22 @@ const App: FC = () => {
     }
 
     if (ctrlKey) {
-      setDate(formatLocaleDate(changeDate.toLocaleString()));
+      day = changeDate.getDate();
+      month = changeDate.getMonth();
+      year = changeDate.getFullYear();
+      hours = changeDate.getHours();
+      minutes = changeDate.getMinutes();
+      seconds = changeDate.getSeconds();
+      const formattedDate: string = formatDate(
+        day,
+        month,
+        year,
+        hours,
+        minutes,
+        seconds
+      );
+
+      setDate(formattedDate);
     } else {
       const formattedDate: string = formatDate(
         day,
