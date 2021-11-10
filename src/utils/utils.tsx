@@ -108,8 +108,6 @@ export const formatInputDate = (date: string) => {
   let seconds: number = Number(inputDate.slice(5, 6));
   let monthIndex: number;
 
-
-
   if (Number(hours) > 23) {
     seconds = minutes;
     minutes = hours;
