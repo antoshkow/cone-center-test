@@ -1,28 +1,28 @@
 # cone-center-test
 
-## Тестовое задание для Cone Center
+## Test task for Cone Center.
 
 1. ### Custom Date Input
 
-2. ### Задание<br>
+2. ### Task<br>
 <img alt="input" rel="noreferrer" target="_blank" src="https://www.cone.ee/788i291x32.gif?key=1c58037ca0084bcbdc147343010f16f5"/><br>
-Требуется реализовать инпут для ввода даты со следующим функционалом:
+It is required to implement an input for entering a date with the following functionality:
 
-- По нажатию на клавиатуре стрелок вверх (↑) и вниз (↓) в зависимости от положения курсора увеличивается или уменьшается на 1 часть даты по циклу и выделяется изменяемая часть инпута. Например, если поставить курсор на месяц и нажать вверх то дата переключится на следующий месяц, при увеличении декабря дата переключается на январь, год при этом не изменяется.
-- По нажатию на клавиатуре комбинаций ctrl + ↑ или ctrl + ↓ происходит то же самое, но не по циклу. Например, при увеличении дня в декабре номер дня увеличивается по одному до 31 числа, после чего 31/December/2021 12:13:00 + 1 день -> 01/January/2022 12:13:00.
-- В инпут также можно вводить текст, разбирать его не нужно.
+- By pressing the up (↑) and down (↓) arrows on the keyboard, depending on the cursor position, it increases or decreases by 1 part of the date in a cycle and the variable part of the input is highlighted. For example, if you put the cursor on a month and press up, then the date will switch to the next month, if December increases, the date switches to January, while the year does not change.
+- By pressing the ctrl + ↑ or ctrl + ↓ combinations on the keyboard, the same thing happens, but not in a cycle. For example, if you increase the day in December, the day number increases one by one until the 31st, after which 31/December/2021 12:13:00 + 1 day -> 01/January/2022 12:13:00.
+- You can also enter text into the input, you do not need to parse it.
 
-3. ### Описание
-- <code>yarn install</code> - установка зависимостей;
-- <code>yarn start</code> - запуск проекта в dev-режиме;
-- <code>yarn build</code> - сборка проекта.
+3. ### Scripts
+- <code>yarn install</code> - install dependencies;
+- <code>yarn start</code> - start project in dev-mode;
+- <code>yarn build</code> - build project.
 
-3. ### Планы по улучшению
-- Исправить выделение с помощью мыши.
+3. ### Improvement plans
+- Fix selection with mouse.
 
-4. ### Применяемые технологии
+4. ### Stack
   - React;
   - TypeScript;
   - React hooks;
 
-6. [Ссылка на gh-pages.](https://antoshkow.github.io/cone-center-test/ "Ссылка на деплой.")
+6. [gh-pages link.](https://antoshkow.github.io/cone-center-test/ "gh-pages link.")
